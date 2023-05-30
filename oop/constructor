@@ -1,0 +1,18 @@
+__class__=${FUNCNAME[1]}
+
+[ -z $2 ] && {
+    echo "No identifier passed to constructor! $__class__ : new" >&2
+    exit 1
+}
+
+eval "declare -gA $2"
+this[__class__]=$__class__
+
+# recreate fields from `this` globally and with proper name
+# declare -p this | sed "s/declare -A this/declare -gA $2/"
+# add intrincic for easier access to methods
+eval "$2 () { $__class__ \$1 $2 \${@:2}; }"
+
+# shift positional arguments to access
+# real input by $1, $2, ...
+set -- ${@:3}

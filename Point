@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+. oop/oop
+
+Point() {
+    . oop/class
+    case $__method__ in
+
+        type)
+            echo "Object has type" ${this[__class__]}
+        ;;
+
+        static_method)
+            echo "Static method called"
+        ;;
+
+        print)
+            echo "(${this[x]}; ${this[y]})"
+        ;;
+
+        move)
+            (( this[x]++ ))
+            (( this[y]++ ))
+        ;;
+
+        distance)
+            declare -n point=$1
+            
+            # we can do type checking!
+            ! ( is point Point ) && {
+                echo "Argumen should be a Point! ${!this} : distance" >&2
+                return 1
+            }
+
+            local x12=$(( ${this[x]} - ${point[x]} ))
+            [ $x12 -lt 0 ] && x12=$((-x12))
+            local y12=$(( ${this[y]} - ${point[y]} ))
+            [ $y12 -lt 0 ] && y12=$((-y12))
+            # bash is too bad in math, sorry
+            echo $(perl -e "print sqrt($x12 ** 2 + $y12 ** 2)")
+        ;;
+
+        new)
+            . oop/constructor
+
+            this[x]=$1
+            this[y]=$2
+        ;;
+
+        destroy)
+            . oop/destroy
+        ;;
+
+        *)
+            . oop/no_such_method
+        ;;
+
+    esac
+}
+

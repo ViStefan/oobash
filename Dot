@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+. oop/oop
+
+Dot() {
+    . oop/class
+    case $__method__ in
+        print)
+            echo "(${this[x]}; ${this[y]})"
+        ;;
+
+        new)
+            . oop/constructor
+
+            this[x]=$1
+            this[y]=$2
+        ;;
+
+        destroy)
+            . oop/destroy
+        ;;
+
+        *)
+            . oop/no_such_method
+        ;;
+
+    esac
+}
+

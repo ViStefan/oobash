@@ -1,0 +1,13 @@
+local __method__=$1
+declare -n this=$2 2>/dev/null
+
+# shift positional arguments to access
+# real input by $1, $2, ...
+case $__method__ in
+    new|destroy)
+        ;;
+    *)
+        set -- ${@:3}
+    ;;
+esac
+

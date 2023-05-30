@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+new() {
+    $1 new "${@:2}"
+}
+
+is() {
+    declare -n this=$1
+    ! [ $? ] && return 1
+    [ ${this[__class__]} = "$2" ] 2>/dev/null
+    return $?
+}
+
