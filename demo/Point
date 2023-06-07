@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-. oop/oop
+OOP=../oop
+
+. $OOP/oop
 
 Point() {
-    . oop/class
+    . $OOP/class extends Object $@
+    set -- ${@:3}
+
     case $__method__ in
 
         type)
@@ -11,6 +15,7 @@ Point() {
         ;;
 
         static_method)
+            (( Point[counter]++ ))
             echo "Static method called"
         ;;
 
@@ -24,37 +29,33 @@ Point() {
         ;;
 
         distance)
-            declare -n point=$1
-            
             # we can do type checking!
-            ! ( is point Point ) && {
-                echo "Argumen should be a Point! ${!this} : distance" >&2
-                return 1
-            }
-
-            local x12=$(( ${this[x]} - ${point[x]} ))
+            . $OOP/assume _point Point $1 || return
+            
+            local x12=$(( ${this[x]} - ${_point[x]} ))
             [ $x12 -lt 0 ] && x12=$((-x12))
-            local y12=$(( ${this[y]} - ${point[y]} ))
+            local y12=$(( ${this[y]} - ${_point[y]} ))
             [ $y12 -lt 0 ] && y12=$((-y12))
+
             # bash is too bad in math, sorry
             echo $(perl -e "print sqrt($x12 ** 2 + $y12 ** 2)")
         ;;
 
         new)
-            . oop/constructor
+            $Parent $__class__ $@
 
             this[x]=$1
             this[y]=$2
         ;;
 
-        destroy)
-            . oop/destroy
-        ;;
-
         *)
-            . oop/no_such_method
+            $Parent $@
         ;;
 
     esac
 }
+
+declare -A Point
+
+Point[counter]=0
 

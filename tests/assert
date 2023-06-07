@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+color() {
+    local esc="\e["
+    local color=${esc}$1m
+    local end=${esc}0m
+
+    printf "%s$2%s" $color $end
+}
+
+fail() {
+    echo -e $(color 31 Failed) "${@}" 
+}
+
+ok() {
+    echo -e $(color 32 Ok) "${@}"  
+}
+
+
+assert() {
+    if [ "$1" = "$2" ]; then
+        echo $(ok $1)
+    else
+        echo $(fail $1 != $2)
+    fi
+}
+

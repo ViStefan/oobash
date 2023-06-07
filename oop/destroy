@@ -1,7 +1,5 @@
-unset -f $2 
-unset $2
+#!/usr/bin/env bash
 
-# shift positional arguments to access
-# real input by $1, $2, ...
-set -- ${@:3}
+unset -f $__name__
+unset $__name__
 

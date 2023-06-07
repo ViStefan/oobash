@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+Object() {
+    . $OOP/class
+    case $__method__ in
+
+        new)
+            . $OOP/constructor $@
+        ;;
+
+        echo)
+            echo $1 $2
+        ;;
+
+        is)
+            is ${!this} $1
+            return $?
+        ;;
+
+        destroy)
+            . $OOP/destroy
+        ;;
+
+        *)
+            . $OOP/no_such_method
+        ;;
+
+    esac
+}
+

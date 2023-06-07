@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+CLASSES=../demo
+
+. assert
+. $CLASSES/Point
+. $CLASSES/Dot
+
+
+echo Create new Point with args
+new Point point1 1 2
+assert "$(point1 print)" "(1; 2)"
+
+echo Another point
+new Point point2 3 2
+assert "$(point2 print)" "(3; 2)"
+
+echo Change coordinate
+point2[y]=4
+assert "$(point2 print)" "(3; 4)"
+
+echo Call method changing state
+point2 move
+assert "$(point2 print)" "(4; 5)"
+
+echo Call method with Point as argument
+assert "$(point2 distance point1)" "4.24264068711928"
+
+echo Get object type
+assert "$(point2 type)" "Object has type Point"
+
+echo Call static method
+assert "$(Point static_method)" "Static method called"
+
+echo Call static method in the same scope
+Point static_method
+assert "${Point[counter]}" "1"
+
+echo Check type of object
+point1 is Point
+assert $? 0
+
+echo Check wrong type of object
+is point1 Dot
+assert $? 1
+
+new Dot dot1
+
+echo Pass object of wrong type to method
+assert "$(point1 distance dot1 2>&1)" "Argument should be the Point! point1 : distance
+Dot given!"
+
+echo Check if object exists in scope
+declare -p point2 2>&1 >/dev/null
+assert $? 0
+
+echo Destroy object
+point2 destroy
+declare -p point2 2>/dev/null
+assert $? 1
+
+echo Call undefined method
+assert "$(point1 undefined_method 2>&1)" "No such method! point1 : undefined_method"
+
+point1 destroy
+dot1 destroy
+
+

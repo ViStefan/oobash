@@ -1,0 +1,7 @@
+CLASSES=../demo
+
+. $CLASSES/Point
+
+new Point point 2 3
+new Point point1 3 4
+

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
+
 echo "No such method! ${!this} : $__method__" >&2
-exit 1
 

@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
 
-. oop/oop
+OOP=../oop
+
+. $OOP/oop
 
 Dot() {
-    . oop/class
+    . $OOP/class extends Object $@
+    set -- ${@:3}
+
     case $__method__ in
         print)
             echo "(${this[x]}; ${this[y]})"
         ;;
 
         new)
-            . oop/constructor
+            $Parent $__class__ $@
 
             this[x]=$1
             this[y]=$2
         ;;
 
-        destroy)
-            . oop/destroy
-        ;;
-
         *)
-            . oop/no_such_method
+            $Parent $@
         ;;
 
     esac

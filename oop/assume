@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+local -n $1=$3
+
+is $1 $2 || {
+    declare -n given=$1
+    echo "Argument should be the $2! ${!this} : $__method__" >&2
+    echo "${given[__class__]} given!" >&2
+    return 1
+}
+

@@ -1,18 +1,16 @@
-__class__=${FUNCNAME[1]}
+#!/usr/bin/env bash
 
-[ -z $2 ] && {
-    echo "No identifier passed to constructor! $__class__ : new" >&2
-    exit 1
+[ -z $__name__ ] && {
+    echo "No identifier passed to constructor! $1 : new" >&2
 }
 
-eval "declare -gA $2"
-this[__class__]=$__class__
+declare -gA $__name__
+declare -n ___class=$1
+this[__class__]=$1
+this[__parents__]="${___class[__parents__]}"
 
 # recreate fields from `this` globally and with proper name
 # declare -p this | sed "s/declare -A this/declare -gA $2/"
 # add intrincic for easier access to methods
-eval "$2 () { $__class__ \$1 $2 \${@:2}; }"
+eval "$__name__ () { $1 \$1 $__name__ \${@:2}; }"
 
-# shift positional arguments to access
-# real input by $1, $2, ...
-set -- ${@:3}

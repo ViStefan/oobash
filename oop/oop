@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+. ../oop/Object
+
 new() {
     $1 new "${@:2}"
 }
 
 is() {
-    declare -n this=$1
-    ! [ $? ] && return 1
+    declare -n this=$1 2>/dev/null
+
     [ ${this[__class__]} = "$2" ] 2>/dev/null
     return $?
 }

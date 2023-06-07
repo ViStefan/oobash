@@ -1,13 +1,42 @@
+#!/usr/bin/env bash
+
+local __class__=${FUNCNAME[1]}
+declare -n Class=$__class__
+
+# populate class parent if not yet
+if [ "$1" = "extends" ] && [ -z "${Class[__parents__]}" ]; then
+    declare -gA $__class__
+
+    declare -n Parent=$2
+
+    if [ -z "${Parent[__parents__]}" ]; then
+        # any class is extension of Object
+        Class[__parents__]="Object"
+    else
+        Class[__parents__]=${Parent[__parents__]}
+    fi
+
+    Class[__parents__]="$2 ${Class[__parents__]}"
+
+    # release Parent var name for futher use
+    declare +n Parent
+    unset Parent
+
+fi
+
+[ "$1" = "extends" ] && set -- ${@:3}
+
 local __method__=$1
-declare -n this=$2 2>/dev/null
+local __name__=$2
+
+declare -n this=$__name__ 2>/dev/null
+
+# prepare Parent call to access inheritance hierarchy
+local __parents__
+read -a __parents__ <<< "${Class[__parents__]}"
+local Parent="${__parents__[0]} $__method__ $__name__"
 
 # shift positional arguments to access
 # real input by $1, $2, ...
-case $__method__ in
-    new|destroy)
-        ;;
-    *)
-        set -- ${@:3}
-    ;;
-esac
+set -- ${@:3}
 
