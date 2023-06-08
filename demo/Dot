@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 OOP=../oop
+CLASSES=../demo
 
 . $OOP/oop
-. ../demo/Point
+. $CLASSES/Point
 
 Dot() {
-    . $OOP/class extends Point $@
-    . $OOP/scope
+    extends Point
 
     case $__method__ in
 

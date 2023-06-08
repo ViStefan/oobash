@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+OOP=../oop
+
+. $OOP/oop
+
+%classname%() {
+    . $OOP/class extends %parentclassname% $@
+    . $OOP/scope
+
+    case $__method__ in
+        
+        # # declare method
+        # method)
+        #       # your code here
+        #       echo "result"
+        # ;; 
+
+        # # overload constructor
+        # new)
+        #       # call parent constructor
+        #       $Parent $@ 
+        #       # your code here
+        #       this[foo]=bar
+        # ;;
+
+        *)
+            $Parent $@ 
+        ;;
+
+    esac
+}
+
+%classname%
+

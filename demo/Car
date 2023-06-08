@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+OOP=../oop
+
+. $OOP/oop
+
+Car() {
+    . $OOP/class $@
+    . $OOP/scope
+
+    case $__method__ in
+
+        print)
+            echo "Beep-beep!"
+        ;;
+        
+
+        *)
+            $Parent $@ 
+        ;;
+
+    esac
+}
+
+Car
+

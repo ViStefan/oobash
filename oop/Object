@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
 Object() {
-    . $OOP/class $@
-    . $OOP/scope
+    class
 
     case $__method__ in
 
         new)
             . $OOP/constructor $@
+        ;;
+
+        class)
+            echo ${this[__class__]}
         ;;
 
         is)

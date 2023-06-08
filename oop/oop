@@ -9,7 +9,19 @@ new() {
 is() {
     declare -n this=$1 2>/dev/null
 
-    [ ${this[__class__]} = "$2" ] 2>/dev/null
-    return $?
+    [ ${this[__class__]} = "$2" ] && return 0
+
+    local __parents__
+    read -a __parents__ <<< "${this[__parents__]}"
+    for i in ${__parents__[@]}; do
+        [ "$i" = "$2" ] && return 0
+    done
+
+    return 1
 }
+
+shopt -s expand_aliases
+
+alias class='. $OOP/class $@; . $OOP/scope'
+alias extends='{ read class; . $OOP/class extends $class $@; . $OOP/scope; } <<< '
 

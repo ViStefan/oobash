@@ -3,8 +3,9 @@
 CLASSES=../demo
 
 . assert
-. $CLASSES/Point
 . $CLASSES/Dot
+. $CLASSES/Point
+. $CLASSES/Car
 
 [ "$DEBUG" = 1 ] && {
     declare -p | grep "point1\|point2\|Point\|Object"
@@ -14,7 +15,6 @@ CLASSES=../demo
 echo Create new Point with args
 new Point point1 1 2
 assert "$(point1 print)" "(1; 2)"
-
 [ "$DEBUG" = 1 ] && {
     declare -p | grep "point1\|point2\|Point\|Object"
     read
@@ -63,14 +63,19 @@ is point1 Dot
 assert $? 1
 
 new Dot dot1 1 2
+[ "$DEBUG" = 1 ] && {
+    read
+    declare -p
+    read
+    declare -f
+}
 
-echo Pass object of wrong type to method
+echo Pass object of inherited class to method
 [ "$DEBUG" = 1 ] && {
     read
     declare -p #| grep "point1\|point2\|Point\|Object\|Dot\|dot1"
 }
-assert "$(point1 distance dot1 2>&1)" "Argument should be the Point! point1 : distance
-Dot given!"
+assert "$(point2 distance dot1 2>&1)" "4.24264068711928"
 
 echo Check if object exists in scope
 declare -p point2 2>&1 >/dev/null
@@ -84,11 +89,18 @@ assert $? 1
 echo Call undefined method
 assert "$(point1 undefined_method 2>&1)" "No such method! point1 : undefined_method"
 
-point1 destroy
-
 echo Call parent method
 assert "$(dot1 print)" "(1; 2)"
 
 echo Call new method in child class
 assert "$(dot1 print_of_dot)" "dotprint (1; 2)"
+
+new Car car1
+echo Call method of other class
+assert "$(car1 print)" "Beep-beep!"
+
+echo Pass object of wrong type to method
+assert "$(point1 distance car1 2>&1)" "Argument should be the Point! point1 : distance
+Car given!"
+
 

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+class=$1
+parentclass=$2
+
+if [ -z "$parentclass" ]; then
+    sed -e "s/%classname%/$class/; s/extends %parentclassname% //" ../oop/Class.template 
+else
+    sed -e "s/%classname%/$class/; s/%parentclassname%/$parentclass/" ../oop/Class.template
+fi
+

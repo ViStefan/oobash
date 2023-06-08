@@ -4,9 +4,10 @@ OOP=../oop
 
 . $OOP/oop
 
+alias
+
 Point() {
-    . $OOP/class $@
-    . $OOP/scope
+    class
 
     case $__method__ in
 
@@ -18,7 +19,7 @@ Point() {
         ;;
 
         type)
-            echo "Object has type" ${this[__class__]}
+            echo "Object has type ${this[__class__]}"
         ;;
 
         static_method)
