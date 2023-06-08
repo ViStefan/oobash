@@ -4,13 +4,6 @@
     echo "No identifier passed to constructor! $1 : new" >&2
 }
 
-declare -gA $__name__
-declare -n ___class=$1
-this[__class__]=$1
-this[__parents__]="${___class[__parents__]}"
-
-# recreate fields from `this` globally and with proper name
-# declare -p this | sed "s/declare -A this/declare -gA $2/"
 # add intrincic for easier access to methods
-eval "$__name__ () { $1 \$1 $__name__ \${@:2}; }"
+eval "$__name__ () { ${this[__class__]} \$1 $__name__ \${@:2}; }"
 

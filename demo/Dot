@@ -3,21 +3,16 @@
 OOP=../oop
 
 . $OOP/oop
+. ../demo/Point
 
 Dot() {
-    . $OOP/class extends Object $@
-    set -- ${@:3}
+    . $OOP/class extends Point $@
+    . $OOP/scope
 
     case $__method__ in
-        print)
-            echo "(${this[x]}; ${this[y]})"
-        ;;
 
-        new)
-            $Parent $__class__ $@
-
-            this[x]=$1
-            this[y]=$2
+        print_of_dot)
+            echo "dotprint (${this[x]}; ${this[y]})"
         ;;
 
         *)
@@ -26,4 +21,6 @@ Dot() {
 
     esac
 }
+
+Dot
 

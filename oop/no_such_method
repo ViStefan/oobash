@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-echo "No such method! ${!this} : $__method__" >&2
+[ -n "$__method__" ] && echo "No such method! ${!this} : $__method__" >&2
 

@@ -5,10 +5,17 @@ OOP=../oop
 . $OOP/oop
 
 Point() {
-    . $OOP/class extends Object $@
-    set -- ${@:3}
+    . $OOP/class $@
+    . $OOP/scope
 
     case $__method__ in
+
+        new)
+            $Parent $@
+
+            this[x]=$1
+            this[y]=$2
+        ;;
 
         type)
             echo "Object has type" ${this[__class__]}
@@ -41,13 +48,6 @@ Point() {
             echo $(perl -e "print sqrt($x12 ** 2 + $y12 ** 2)")
         ;;
 
-        new)
-            $Parent $__class__ $@
-
-            this[x]=$1
-            this[y]=$2
-        ;;
-
         *)
             $Parent $@
         ;;
@@ -55,7 +55,7 @@ Point() {
     esac
 }
 
-declare -A Point
+Point
 
 Point[counter]=0
 

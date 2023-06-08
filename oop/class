@@ -3,40 +3,40 @@
 local __class__=${FUNCNAME[1]}
 declare -n Class=$__class__
 
+declare -gA $__class__
 # populate class parent if not yet
-if [ "$1" = "extends" ] && [ -z "${Class[__parents__]}" ]; then
-    declare -gA $__class__
+if [ -z "${Class[__parents__]}" ]; then
+    declare -n Parent=$2 2>/dev/null
 
-    declare -n Parent=$2
-
-    if [ -z "${Parent[__parents__]}" ]; then
+    if [ "$1" = "extends" ]; then
+        Class[__parents__]="${Parent[__parents__]}"
+        Class[__parents__]="$2 ${Class[__parents__]}"
+    else
         # any class is extension of Object
         Class[__parents__]="Object"
-    else
-        Class[__parents__]=${Parent[__parents__]}
     fi
-
-    Class[__parents__]="$2 ${Class[__parents__]}"
 
     # release Parent var name for futher use
     declare +n Parent
     unset Parent
-
 fi
 
-[ "$1" = "extends" ] && set -- ${@:3}
+[ "$1" == "extends" ] && set -- ${@:3}
+
+[ -z "$1" ] && return
 
 local __method__=$1
 local __name__=$2
 
-declare -n this=$__name__ 2>/dev/null
+[ -n "$__name__" ] && {
+    declare -gA $__name__
+    declare -n this=$__name__
+    [ -z "${this[__class__]}" ] && this[__class__]=$__class__
+    [ -z "${this[__parents__]}" ] && this[__parents__]=${Class[__parents__]}
+}
 
 # prepare Parent call to access inheritance hierarchy
 local __parents__
 read -a __parents__ <<< "${Class[__parents__]}"
 local Parent="${__parents__[0]} $__method__ $__name__"
-
-# shift positional arguments to access
-# real input by $1, $2, ...
-set -- ${@:3}
 

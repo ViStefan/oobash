@@ -6,14 +6,32 @@ CLASSES=../demo
 . $CLASSES/Point
 . $CLASSES/Dot
 
+[ "$DEBUG" = 1 ] && {
+    declare -p | grep "point1\|point2\|Point\|Object"
+    read
+}
 
 echo Create new Point with args
 new Point point1 1 2
 assert "$(point1 print)" "(1; 2)"
 
+[ "$DEBUG" = 1 ] && {
+    declare -p | grep "point1\|point2\|Point\|Object"
+    read
+    declare -f
+    read
+}
+
 echo Another point
 new Point point2 3 2
 assert "$(point2 print)" "(3; 2)"
+
+[ "$DEBUG" = 1 ] && {
+    declare -p
+    read
+    declare -f
+    read
+}
 
 echo Change coordinate
 point2[y]=4
@@ -44,9 +62,13 @@ echo Check wrong type of object
 is point1 Dot
 assert $? 1
 
-new Dot dot1
+new Dot dot1 1 2
 
 echo Pass object of wrong type to method
+[ "$DEBUG" = 1 ] && {
+    read
+    declare -p #| grep "point1\|point2\|Point\|Object\|Dot\|dot1"
+}
 assert "$(point1 distance dot1 2>&1)" "Argument should be the Point! point1 : distance
 Dot given!"
 
@@ -63,6 +85,10 @@ echo Call undefined method
 assert "$(point1 undefined_method 2>&1)" "No such method! point1 : undefined_method"
 
 point1 destroy
-dot1 destroy
 
+echo Call parent method
+assert "$(dot1 print)" "(1; 2)"
+
+echo Call new method in child class
+assert "$(dot1 print_of_dot)" "dotprint (1; 2)"
 
