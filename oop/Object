@@ -6,7 +6,8 @@ Object() {
     case $__method__ in
 
         new)
-            . $OOP/constructor $@
+            # add intrincic for access to methods by object name
+            eval "$__name__ () { ${this[__class__]} \"\$1\" \"$__name__\" \${@:2}; }"
         ;;
 
         class)
@@ -19,7 +20,8 @@ Object() {
         ;;
 
         destroy)
-            . $OOP/destroy
+            unset -f $__name__
+            unset $__name__
         ;;
 
         *)

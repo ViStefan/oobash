@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+shopt -s expand_aliases
+
+alias class='{ read filler extends class; . $OOP/class `[ "$extends" = "extends" ] && echo extends $class` $@; . $OOP/scope; } <<< filler '
+
 . ../oop/Object
 
 new() {
@@ -19,9 +23,4 @@ is() {
 
     return 1
 }
-
-shopt -s expand_aliases
-
-alias class='. $OOP/class $@; . $OOP/scope'
-alias extends='{ read class; . $OOP/class extends $class $@; . $OOP/scope; } <<< '
 

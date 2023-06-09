@@ -4,8 +4,6 @@ OOP=../oop
 
 . $OOP/oop
 
-alias
-
 Point() {
     class
 

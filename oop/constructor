@@ -5,5 +5,5 @@
 }
 
 # add intrincic for easier access to methods
-eval "$__name__ () { ${this[__class__]} \$1 $__name__ \${@:2}; }"
+eval "$__name__ () { ${this[__class__]} \"\$1\" \"$__name__\" \${@:2}; }"
 

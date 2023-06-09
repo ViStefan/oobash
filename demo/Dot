@@ -7,7 +7,7 @@ CLASSES=../demo
 . $CLASSES/Point
 
 Dot() {
-    extends Point
+    class extends Point
 
     case $__method__ in
 
