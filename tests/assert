@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+FAILED=0
+
 color() {
     local esc="\e["
     local color=${esc}$1m
@@ -21,6 +23,7 @@ assert() {
     if [ "$1" = "$2" ]; then
         echo $(ok $1)
     else
+        export FAILED=1
         echo $(fail $1 != $2)
     fi
 }

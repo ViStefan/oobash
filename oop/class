@@ -38,5 +38,4 @@ local __name__=$2
 # prepare Parent call to access inheritance hierarchy
 local __parents__
 read -a __parents__ <<< "${Class[__parents__]}"
-local Parent="${__parents__[0]} $__method__ $__name__"
-
+Parent="${__parents__[0]} $__method__ $__name__"

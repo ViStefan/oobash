@@ -3,104 +3,118 @@
 CLASSES=../demo
 
 . assert
-. $CLASSES/Dot
 . $CLASSES/Point
 . $CLASSES/Car
+. $CLASSES/Dot
 
-[ "$DEBUG" = 1 ] && {
-    declare -p | grep "point1\|point2\|Point\|Object"
-    read
+function debug()
+{
+    OBJECTS="point1\|point2\|dot1\|Point\|Object\|Dot"
+
+    [ -n "$DEBUG" ] && {
+
+        [ "$DEBUG" -gt 0 ] && {
+            declare -p | grep $OBJECTS
+            read
+        }
+        [ "$DEBUG" -gt 1 ] && {
+            declare -f
+            read
+        }
+    }
+
 }
+
+debug
 
 echo Create new Point with args
 new Point point1 1 2
 assert "$(point1 print)" "(1; 2)"
-[ "$DEBUG" = 1 ] && {
-    declare -p | grep "point1\|point2\|Point\|Object"
-    read
-    declare -f
-    read
-}
+debug
 
 echo Another point
 new Point point2 3 2
 assert "$(point2 print)" "(3; 2)"
-
-[ "$DEBUG" = 1 ] && {
-    declare -p
-    read
-    declare -f
-    read
-}
+debug
 
 echo Change coordinate
 point2[y]=4
 assert "$(point2 print)" "(3; 4)"
+debug
 
 echo Call method changing state
 point2 move
 assert "$(point2 print)" "(4; 5)"
+debug
 
 echo Call method with Point as argument
 assert "$(point2 distance point1)" "4.24264068711928"
+debug
 
 echo Get object type
 assert "$(point2 type)" "Object has type Point"
+debug
 
 echo Call static method
 assert "$(Point static_method)" "Static method called"
+debug
 
 echo Call static method in the same scope
 Point static_method
 assert "${Point[counter]}" "1"
+debug
 
 echo Check type of object
 point1 is Point
 assert $? 0
+debug
 
 echo Check wrong type of object
 is point1 Dot
 assert $? 1
+debug
 
+echo Create new object of other class
 new Dot dot1 1 2
-[ "$DEBUG" = 1 ] && {
-    read
-    declare -p
-    read
-    declare -f
-}
+debug
 
 echo Pass object of inherited class to method
-[ "$DEBUG" = 1 ] && {
-    read
-    declare -p #| grep "point1\|point2\|Point\|Object\|Dot\|dot1"
-}
 assert "$(point2 distance dot1 2>&1)" "4.24264068711928"
+debug
 
 echo Check if object exists in scope
 declare -p point2 2>&1 >/dev/null
 assert $? 0
+debug
 
 echo Destroy object
 point2 destroy
 declare -p point2 2>/dev/null
 assert $? 1
+debug
 
 echo Call undefined method
 assert "$(point1 undefined_method 2>&1)" "No such method! point1 : undefined_method"
+debug
 
 echo Call parent method
 assert "$(dot1 print)" "(1; 2)"
+debug
 
 echo Call new method in child class
 assert "$(dot1 print_of_dot)" "dotprint (1; 2)"
+debug
 
 new Car car1
 echo Call method of other class
 assert "$(car1 print)" "Beep-beep!"
+debug
 
 echo Pass object of wrong type to method
 assert "$(point1 distance car1 2>&1)" "Argument should be the Point! point1 : distance
 Car given!"
+debug
 
+echo
+[ $FAILED -eq 0 ] && ok "No errors ocurred" || fail "Some errors occured"
 
