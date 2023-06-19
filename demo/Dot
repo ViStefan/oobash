@@ -7,14 +7,7 @@ CLASSES=../demo
 . $CLASSES/Point
 
 Dot() {
-    function f() {
-        read class
-        . $OOP/class extends $class $@
-    }
-    local __method__=$1
-    local __name__=$2
-    . $OOP/scope
-    f $__method__ $__name__ $@ <<< Point
+    extends Point
 
     case $__method__ in
 

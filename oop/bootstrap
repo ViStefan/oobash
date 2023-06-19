@@ -4,8 +4,8 @@ class=$1
 parentclass=$2
 
 if [ -z "$parentclass" ]; then
-    sed -e "s/%classname%/$class/; s/extends %parentclassname% //" ../oop/Class.template 
+    sed -e "s/%classname%/$class/; s/%parentclassname%/class/" ../oop/Class.template
 else
-    sed -e "s/%classname%/$class/; s/%parentclassname%/$parentclass/" ../oop/Class.template
+    sed -e "s/%classname%/$class/; s/%parentclassname%/extends $parentclass/" ../oop/Class.template
 fi
 

@@ -21,6 +21,10 @@ function debug()
             declare -f
             read
         }
+        [ "$DEBUG" -gt 2 ] && {
+            set
+            read
+        }
     }
 
 }
@@ -101,6 +105,10 @@ echo Call parent method
 assert "$(dot1 print)" "(1; 2)"
 debug
 
+echo Get parameter by method
+assert "$(dot1 get x)" "1"
+debug
+
 echo Call new method in child class
 assert "$(dot1 print_of_dot)" "dotprint (1; 2)"
 debug
@@ -118,3 +126,4 @@ debug
 echo
 [ $FAILED -eq 0 ] && ok "No errors ocurred" || fail "Some errors occured"
 
+debug

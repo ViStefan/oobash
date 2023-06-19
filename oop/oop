@@ -2,7 +2,8 @@
 
 shopt -s expand_aliases
 
-alias class='{ read filler extends class; . $OOP/class $([ "$extends" = "extends" ] && echo extends $class) $@; . $OOP/scope; } <<< "filler" '
+alias class='. $OOP/class $@; . $OOP/scope;'
+alias extends='{ . $OOP/class extends `read a; echo $a` $@; . $OOP/scope; } <<< '
 
 . ../oop/Object
 

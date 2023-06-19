@@ -5,8 +5,7 @@ OOP=../oop
 . $OOP/oop
 
 Car() {
-    . $OOP/class $@
-    . $OOP/scope
+    class
 
     case $__method__ in
 

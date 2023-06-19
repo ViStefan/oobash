@@ -24,6 +24,10 @@ Object() {
             unset $__name__
         ;;
 
+        get)
+            echo ${this[$1]}
+        ;;
+
         *)
             . $OOP/no_such_method
         ;;

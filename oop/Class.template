@@ -5,8 +5,7 @@ OOP=../oop
 . $OOP/oop
 
 %classname%() {
-    . $OOP/class extends %parentclassname% $@
-    . $OOP/scope
+    %parentclassname%
 
     case $__method__ in
         
